@@ -8,7 +8,7 @@
 #include "driverlib/pin_map.h"
 #include "math.h"
 #include "inc/hw_gpio.h"
-                                           //hafta_03_odev_1
+                                          
 void init();
 
 
@@ -51,7 +51,7 @@ void init(){
   //HWREG(GPIO_PORTF_BASE + GPIO_O_LOCK) = 0;  //pf0 kiliti kapa
 
     GPIOPinTypeGPIOInput(GPIO_PORTF_BASE, GPIO_PIN_4|GPIO_PIN_0);
-    GPIOPadConfigSet(GPIO_PORTF_BASE, GPIO_PIN_4|GPIO_PIN_0, GPIO_STRENGTH_4MA, GPIO_PIN_TYPE_STD_WPU); // input ayarý standart pull-up , pull up = bastigin zaman 0 a cekiyor , pull down bastiginda 1 e cekiyor.
+    GPIOPadConfigSet(GPIO_PORTF_BASE, GPIO_PIN_4|GPIO_PIN_0, GPIO_STRENGTH_4MA, GPIO_PIN_TYPE_STD_WPU); // input ayarÃ½ standart pull-up , pull up = bastigin zaman 0 a cekiyor , pull down bastiginda 1 e cekiyor.
 
     //GPIO_PORTF_DIR_R |= 0x0e;
     //GPIO_PORTF_DIR_R |= (1<<1)|(1<<2)|(1<<3);
