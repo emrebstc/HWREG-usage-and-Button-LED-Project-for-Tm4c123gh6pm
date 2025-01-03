@@ -1,0 +1,59 @@
+#include "stdint.h"
+#include "stdbool.h"
+#include "inc/tm4c123gh6pm.h"
+#include "driverlib/gpio.h"
+#include "driverlib/gpio.c"
+#include "driverlib/sysctl.h"
+#include "driverlib/sysctl.c"
+#include "driverlib/pin_map.h"
+#include "math.h"
+#include "inc/hw_gpio.h"
+                                           //hafta_03_odev_1
+void init();
+
+
+int main(void)
+{
+
+    init();
+
+    while(1){
+
+
+          if (HWREG(0x40025000+4*(1+16))==1){
+              while(HWREG(0x40025000+4*(1+16))==1){}
+
+               HWREG(0x40025000+4*(1<<1))=2;       //GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_1, 2);
+               SysCtlDelay(10000000/4);
+               HWREG(0x40025000+4*(1<<1))=0;       //GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_1, 0);
+          }
+          else if (HWREG(0x40025000+4*(1+16))==16){
+              while(HWREG(0x40025000+4*(1+16))==16){}
+
+               HWREG(0x40025000+4*(1<<2))=4;    //>>>    // HWREG(0x40025000+4*(2^2))=4; HWREG CALISMIYOR !!!    //GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_2, 4);
+               SysCtlDelay(10000000/4);
+               HWREG(0x40025000+4*(1<<2))=0;    //>>>    // HWREG(0x40025000+4*(2^2))=0; HWREG CALISMIYOR !!!   //GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_2, 0);
+
+           }
+
+               SysCtlDelay(10000000/2);
+           }
+
+}
+
+void init(){
+    SysCtlClockSet(SYSCTL_SYSDIV_4|SYSCTL_USE_PLL|SYSCTL_XTAL_16MHZ|SYSCTL_OSC_MAIN);
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
+    GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3);
+
+    HWREG(GPIO_PORTF_BASE + GPIO_O_LOCK) = GPIO_LOCK_KEY;  //pf0 kiliti ac
+    HWREG(GPIO_PORTF_BASE + GPIO_O_CR) |= 0x01;  //pf0 kiliti ac
+  //HWREG(GPIO_PORTF_BASE + GPIO_O_LOCK) = 0;  //pf0 kiliti kapa
+
+    GPIOPinTypeGPIOInput(GPIO_PORTF_BASE, GPIO_PIN_4|GPIO_PIN_0);
+    GPIOPadConfigSet(GPIO_PORTF_BASE, GPIO_PIN_4|GPIO_PIN_0, GPIO_STRENGTH_4MA, GPIO_PIN_TYPE_STD_WPU); // input ayarý standart pull-up , pull up = bastigin zaman 0 a cekiyor , pull down bastiginda 1 e cekiyor.
+
+    //GPIO_PORTF_DIR_R |= 0x0e;
+    //GPIO_PORTF_DIR_R |= (1<<1)|(1<<2)|(1<<3);
+
+}
